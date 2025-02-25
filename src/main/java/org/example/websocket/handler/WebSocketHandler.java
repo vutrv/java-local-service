@@ -37,6 +37,18 @@ public class WebSocketHandler extends TextWebSocketHandler {
         }
     }
 
+    public void sendMessageToAll(String message) {
+        for (WebSocketSession session : sessions) {
+            if (session.isOpen()) {
+                try {
+                    session.sendMessage(new TextMessage(message));
+                } catch (IOException e) {
+                    System.err.println("Failed to send message: " + e.getMessage());
+                }
+            }
+        }
+    }
+
     @Override
     public void afterConnectionClosed(@NonNull WebSocketSession session, @NonNull CloseStatus status) {
         sessions.remove(session);
