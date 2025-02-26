@@ -1,10 +1,12 @@
 package org.example.websocket.service;
 
 import org.example.websocket.handler.WebSocketHandler;
+import org.example.websocket.model.StatusMessage;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+
 import java.io.IOException;
 
 @Service
@@ -16,7 +18,7 @@ public class WebSocketService {
     }
 
     public void sendMessage(String message) throws IOException {
-        for (WebSocketSession session: WebSocketHandler.getSessions()) {
+        for (WebSocketSession session : WebSocketHandler.getSessions()) {
             if (session.isOpen()) {
                 session.sendMessage(new TextMessage(message));
             }
@@ -25,6 +27,10 @@ public class WebSocketService {
 
     @Scheduled(fixedRate = 2000)
     public void sendPeriodicMessages() {
-        webSocketHandler.sendMessageToAll("Automated server message at: " + System.currentTimeMillis());
+        webSocketHandler.broadcastMessage(new StatusMessage(
+                "Automate message",
+                "success",
+                "Automated server message at: " + System.currentTimeMillis()
+        ));
     }
 }
