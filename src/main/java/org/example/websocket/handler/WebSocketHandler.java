@@ -1,6 +1,7 @@
 package org.example.websocket.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import org.example.websocket.model.ClientMessage;
 import org.example.websocket.model.StatusMessage;
 import org.springframework.lang.NonNull;
@@ -11,13 +12,11 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class WebSocketHandler extends TextWebSocketHandler {
     private static final int MAX_SESSIONS = 100;
-    private static final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
@@ -94,7 +93,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
         sessions.remove(session);
     }
 
-    public static CopyOnWriteArrayList<WebSocketSession> getSessions() {
-        return sessions;
-    }
+    @Getter
+    private final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 }

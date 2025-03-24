@@ -24,9 +24,4 @@ public class WebSocketController {
         webSocketService.sendMessage(message);
         return "Message send: " + message;
     }
-
-    @GetMapping("/jobs")
-    public List<Job> getJobList() {
-        return jobService.getJobList();
-    }
 }
