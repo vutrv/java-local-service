@@ -1,27 +1,18 @@
 package org.example.websocket.controller;
 
-import org.example.websocket.model.Job;
-import org.example.websocket.service.JobService;
-import org.example.websocket.service.WebSocketService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
 
-import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
-@RestController
-@RequestMapping("/api/ws")
+@Controller
 public class WebSocketController {
-    private final WebSocketService webSocketService;
-    private final JobService jobService;
 
-    public WebSocketController(WebSocketService webSocketService, JobService jobService) {
-        this.webSocketService = webSocketService;
-        this.jobService = jobService;
-    }
-
-    @PostMapping("/send")
-    public String sendMessage(@RequestParam String message) throws IOException {
-        webSocketService.sendMessage(message);
-        return "Message send: " + message;
+    @MessageMapping("/start-download")  // Clients send here: "/app/jobs/download"
+    @SendTo("/topic/jobs/download")    // Broadcast to subscribers
+    public Map<String, Object> handleClientMessage(Map<String, Object> message) {
+        System.out.println("Received message from client: " + message);
+        return message;
     }
 }
