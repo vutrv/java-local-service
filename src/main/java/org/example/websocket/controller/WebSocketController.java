@@ -9,10 +9,11 @@ import java.util.Map;
 @Controller
 public class WebSocketController {
 
-    @MessageMapping("/start-download")  // Clients send here: "/app/jobs/download"
-    @SendTo("/topic/jobs/download")    // Broadcast to subscribers
-    public Map<String, Object> handleClientMessage(Map<String, Object> message) {
-        System.out.println("Received message from client: " + message);
+    @MessageMapping("/start-download-command")  // Clients send here: "/app/start-download-command"
+    @SendTo("/topic/start-download-command")    // Broadcast to subscribers
+    public String handleClientMessage() {
+        String message = "Received Command: Start-Download_Command from client";
+        System.out.println(message);
         return message;
     }
 }
